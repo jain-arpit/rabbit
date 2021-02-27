@@ -9,7 +9,8 @@ import java.io.Serializable;
 @ToString
 @Getter
 @Setter
-public class UserDetails implements Serializable {
-    private Long id;
-    private String name;
+public class Message implements Serializable {
+    private String message;
+    private String routingKey;
+    private String exchange;
 }
