@@ -1,4 +1,4 @@
-package com.demo.rabbit.direct;
+package com.demo.rabbit.fanout;
 
 import com.demo.rabbit.ApplicationConstants;
 import com.demo.rabbit.Message;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/direct-exchange")
+@RequestMapping("/fanout-exchange")
 @Log4j2
-public class DirectController {
+public class FanoutController {
 
     private final RabbitTemplate rabbitTemplate;
     private final MessageSender messageSender;
 
     @Autowired
-    public DirectController(RabbitTemplate rabbitTemplate, MessageSender messageSender) {
+    public FanoutController(RabbitTemplate rabbitTemplate, MessageSender messageSender) {
         this.rabbitTemplate = rabbitTemplate;
         this.messageSender = messageSender;
     }
@@ -31,8 +31,8 @@ public class DirectController {
     @PostMapping(value = "/send", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> sendMessage(@RequestBody Message message) {
         try {
-            log.info("Sending message to  direct exchange");
-            messageSender.sendMessage(rabbitTemplate, message.getExchange(), message.getRoutingKey(), message);
+            log.info("Sending message to fanout exchange");
+            messageSender.sendMessage(rabbitTemplate, message.getExchange(), "", message);
             return new ResponseEntity<>(ApplicationConstants.IN_QUEUE, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Exception while  sending message to the  queue", e);

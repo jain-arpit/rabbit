@@ -1,5 +1,6 @@
-package com.demo.rabbit;
+package com.demo.rabbit.queues;
 
+import com.demo.rabbit.Message;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,9 +12,24 @@ import org.springframework.web.client.HttpClientErrorException;
 @Log4j2
 public class MessageListener {
 
-    @RabbitListener(queues = "${app.queue.name}")
-    public void receiveMessage(final Message data) {
-        log.info("Message received from queue. Data:{}", data);
+    @RabbitListener(queues = "transport-queue")
+    public void transportQueueConsumer(final Message data) {
+        consumeMessage(data, "transport-queue");
+    }
+
+    @RabbitListener(queues = "it-queue")
+    public void itQueueConsumer(final Message data) {
+        consumeMessage(data, "it-queue");
+    }
+
+    @RabbitListener(queues = "admin-queue")
+    public void adminQueueConsumer(final Message data) {
+        consumeMessage(data, "admin-queue");
+    }
+
+
+    private void consumeMessage(final Message data, String queueName) {
+        log.info("Message received. Queue:{} , Data:{}", queueName, data);
         try {
             log.info("Making call to external api to send message");
 
@@ -37,3 +53,5 @@ public class MessageListener {
         }
     }
 }
+
+

@@ -11,25 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DirectConfig {
-    @Bean
-    Queue transportQueue() {
-        return new Queue("transport-queue");
-    }
-
-    @Bean
-    Queue itQueue() {
-        return new Queue("it-queue");
-    }
-
-
-    @Bean
-    Queue adminQueue() {
-        return new Queue("admin-queue");
-    }
 
     @Bean
     DirectExchange directExchange() {
-        return new DirectExchange("rabbit-direct-exchange");
+        return new DirectExchange("direct-exchange");
     }
 
     @Bean
