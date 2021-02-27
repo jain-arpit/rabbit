@@ -1,9 +1,5 @@
 package com.demo.rabbit;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -27,22 +23,6 @@ public class RabbitApplication implements RabbitListenerConfigurer {
     @Bean
     public ApplicationConfigReader getApplicationConfigReader() {
         return new ApplicationConfigReader();
-    }
-
-    @Bean
-    public TopicExchange getAppExchange() {
-        return new TopicExchange(getApplicationConfigReader().getExchange());
-    }
-
-    @Bean
-    public Queue getAppQueue() {
-        return new Queue(getApplicationConfigReader().getQueue());
-    }
-
-
-    @Bean
-    public Binding declareAppBinding() {
-        return BindingBuilder.bind(getAppQueue()).to(getAppExchange()).with(getApplicationConfigReader().getRoutingKey());
     }
 
     @Bean

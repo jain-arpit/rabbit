@@ -13,4 +13,5 @@ public class Message implements Serializable {
     private String message;
     private String routingKey;
     private String exchange;
+    private String department;
 }
