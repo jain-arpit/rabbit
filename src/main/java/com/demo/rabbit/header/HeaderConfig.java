@@ -1,10 +1,7 @@
 package com.demo.rabbit.header;
 
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.HeadersExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,5 +28,11 @@ public class HeaderConfig {
     Binding headersItBinding(Queue itQueue, HeadersExchange headersExchange) {
         return BindingBuilder.bind(itQueue).to(headersExchange).where("department").matches("it");
     }
+
+    @Bean
+    Binding headersExchangeBinding(Queue itQueue, HeadersExchange headersExchange, FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(fanoutExchange).to(headersExchange).where("department").matches("all");
+    }
+
 
 }
